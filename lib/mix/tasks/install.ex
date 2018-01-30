@@ -28,34 +28,12 @@ defmodule Mix.Tasks.Materialize.Install do
   @compile if Mix.env == :test, do: :export_all
 
   @cmd_npm "npm install materialize-css --save-dev"
-  @assets_struct """
-  project_dir
-  ...
-  |--assets
-      |--static
-          |--fonts
-              |--***
-  ...
-  |--assets
-      |--vendor
-          |--materialize
-             |--css
-                 |--materialize.css
-                 |--materialize.min.css
-             |--js
-                 |--materialize.js
-                 |--materialize.min.js
-"""
 
 	@doc "start task"
 	def run(_) do
 		IO.puts "Install materialize-css"
 		do_run()
 	end
-
-  def get_assets_struct do
-    @assets_struct
-  end
 
 	defp do_run do
 		npm_install() |> do_assets()
@@ -81,23 +59,13 @@ defmodule Mix.Tasks.Materialize.Install do
     copy_dir_r(npm_dist_path, priv_static_path, "fonts")
 
     Mix.shell.info [:white, "* New files copied:"]
-    Mix.shell.info [:white, "#{@assets_struct}"]
+    Mix.shell.info [:white, "\n#{Materialize.assets_struct}"]
 	end
 
   defp finish do
-    Mix.shell.info [:green, "* The materialize-css installed successful! \n"]
-    Mix.shell.info [:white, """
-* If you are using a brunch, change the file assets/brunch-config.js:
-
-  # add JQuery
-  npm: {
-    enabled: true,
-    globals: {
-      $: 'jquery',
-      jQuery: 'jquery'
-    }
-  }
-"""]
+    Mix.shell.info [:green, "* The materialize-css installed successful!"]
+    Mix.shell.info [:white, "\n* If you are using a brunch, change the file assets/brunch-config.js:"]
+    Mix.shell.info [:white, "\n#{Materialize.if_use_branch}"]
   end
 
   defp cmd(cmd) do

@@ -1,4 +1,32 @@
 defmodule Materialize do
+  @assets_struct """
+    project_dir
+    ...
+    |--assets
+      |--static
+        |--fonts
+          |--***
+      |--vendor
+        |--materialize
+          |--css
+            |--materialize.css
+            |--materialize.min.css
+          |--js
+            |--materialize.js
+            |--materialize.min.js
+    ...
+  """
+  @if_use_branch """
+    # add JQuery
+    npm: {
+      enabled: true,
+      globals: {
+        $: 'jquery',
+        jQuery: 'jquery'
+      }
+    }
+"""
+
   @moduledoc """
   This package install [materialize-css](http://materializecss.com/getting-started.html) to you project.
 
@@ -33,9 +61,13 @@ defmodule Materialize do
   * dist - copy js, css files to *assets/vendor/materialize*
   * fonts  - copy dir fonts to *assets/static*
 
-  After install you have next structure:
+  After install you have next structure in the folder *assets*:
 
-  		#{Mix.Tasks.Materialize.Install.get_assets_struct}
+    #{@assets_struct}
+
+  If you are using a brunch, change the file assets/brunch-config.js:
+
+    #{@if_use_branch}
 
   Use **materialize-css** in you template project:
 
@@ -46,4 +78,12 @@ defmodule Materialize do
   be found at [https://hexdocs.pm/materialize](https://hexdocs.pm/materialize).
 
   """
+
+  def assets_struct do
+    @assets_struct
+  end
+
+  def if_use_branch do
+    @if_use_branch
+  end
 end
