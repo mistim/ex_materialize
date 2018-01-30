@@ -31,13 +31,13 @@ defmodule Materialize do
 
   * npm - run npm install materialize-css --save-dev
   * dist - copy js, css files to *assets/vendor/materialize*
-  * fonts  - copy dir fonts to *priv/static*
+  * fonts  - copy dir fonts to *assets/static*
 
   After install you have next structure:
 
   		project_dir
   		...
-  		|--priv
+  		|--assets
   		    |--static
   		        |--fonts
   		            |--***

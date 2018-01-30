@@ -8,24 +8,17 @@ defmodule Mix.Tasks.Materialize.Install do
 
   Comment out or delete the contents of the file **assets/css/phoenix.css**
 
-	Change the file **assets/brunch-config.js**:
+  If you are using a brunch, change the file **assets/brunch-config.js**:
 
 	```Elixir
-  	npm: {
-	   enabled: true,
-	   globals: {
-	     $: 'jquery',
-	     jQuery: 'jquery'
-	   }
-	 }
+    npm: {
+      enabled: true,
+      globals: {
+        $: 'jquery',
+        jQuery: 'jquery'
+      }
+    }
 	```
-
-	And run brunch build:
-
-	```shell
-  cd assets && node node_modules/brunch/bin/brunch build
-  ```
-
 	"""
 
 	# @shortdoc "Install materialize-css"
@@ -56,7 +49,7 @@ defmodule Mix.Tasks.Materialize.Install do
     chek_path(npm_dist_path, "\nTray run: npm install materialize-css --save-dev")
 
     web_vendor_path = Path.join(~w(assets vendor materialize))
-    priv_static_path = Path.join(~w(priv static))
+    priv_static_path = Path.join(~w(assets static))
 
     File.mkdir_p web_vendor_path
 
@@ -72,10 +65,8 @@ defmodule Mix.Tasks.Materialize.Install do
   defp cmd(cmd) do
     Mix.shell.info [:green, "* running ", :reset, cmd]
     case Mix.shell.cmd(cmd, quiet: true) do
-      0 ->
-        []
-      _ ->
-        ["$ #{cmd}"]
+      0 -> []
+      _ -> ["$ #{cmd}"]
     end
   end
 
