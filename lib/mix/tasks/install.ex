@@ -11,13 +11,7 @@ defmodule Mix.Tasks.Materialize.Install do
   If you are using a brunch, change the file **assets/brunch-config.js**:
 
 	```Elixir
-    npm: {
-      enabled: true,
-      globals: {
-        $: 'jquery',
-        jQuery: 'jquery'
-      }
-    }
+    #{Materialize.if_use_branch}
 	```
 	"""
 

@@ -65,6 +65,8 @@ defmodule Materialize do
 
     #{@assets_struct}
 
+  Comment out or delete the contents of the file **assets/css/phoenix.css**
+
   If you are using a brunch, change the file assets/brunch-config.js:
 
     #{@if_use_branch}
