@@ -1,84 +1,71 @@
 # Materialize
 
-This package install [materialize-css](http://materializecss.com/getting-started.html) to you project. 
+This package install [materialize-css](http://materializecss.com/getting-started.html) to you project.
 
-## Installation
+  ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `materialize` to your list of dependencies in `mix.exs`:
+  If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+  by adding `materialize` to your list of dependencies in `mix.exs`:
 
-```elixir
-def deps do
-  [{:materialize, "~> 0.1.4"}]
-end
-```
+  ```elixir
+  def deps do
+    [{:materialize, "~> #{Materialize.Mixfile.get_version}"}]
+  end
+  ```
 
-Next you need get deps:
+  Next you need get deps:
 
-```shell
-$ mix deps.get
-```
+  ```shell
+  $ mix deps.get
+  ```
 
-And run mix task:
+  And run mix task:
 
-```shell
-$ mix materialize.install
-```
+  ```shell
+  $ mix materialize.install
+  ```
 
-Change the file **brunch-config.js** following the instructions into this file.
-And run brunch build:
+  ### Result
 
-```shell
-node node_modules/brunch/bin/brunch build
-```
+  Task **materialize.install** do next:
 
-### Result
+  * npm - run npm install materialize-css --save-dev
+  * dist - copy js, css files to *assets/vendor/materialize*
+  * fonts  - copy dir fonts to *assets/static*
 
-Task **materialize.install** do next:
+  After install you have next structure in the folder *assets*:
 
-* npm - run npm install materialize-css --save-dev
-* dist - copy js, css files to *web/static/vendor/materialize*
-* fonts  - copy dir fonts to *web/static/assets*
-* brunch - append instructions to brunch-config.js
+  ```
+  project_dir
+  ...
+  |--assets
+    |--static
+      |--fonts
+        |--***
+    |--vendor
+      |--materialize
+        |--css
+          |--materialize.css
+          |--materialize.min.css
+        |--js
+          |--materialize.js
+          |--materialize.min.js
+  ...
+  ```
 
-After install you have next structure:
+  Comment out or delete the contents of the file **assets/css/phoenix.css**
 
-		project_dir
-		...
-		|--priv
-		    |--static
-		        |--css
-		            |--materialize.css
-		            |--materialize.min.css
-		        |--js
-		            |--materialize.js
-		            |--materialize.min.js
-		...
-		
-		|--assets
-		    |--vendor
-			|--materialize
-			   |--css
-			       |--materialize.css
-			       |--materialize.min.css
-			   |--fonts
-			   |--js
-			       |--materialize.js
-			       |--materialize.min.js
-		...
-		
-Use **materialize-css** in you template project:
- 
-```Elixir
-	# web/templates/layout/app.html.eex
-	
-	<link rel="stylesheet" href="<%= static_path(@conn, "/css/materialize.css") %>">
-	
-	# Add it below the script tag for app.js
-	<script src="<%= static_path(@conn, "/js/materialize.js") %>"></script>
-```
+  If you are using a brunch, change the file assets/brunch-config.js:
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/materialize](https://hexdocs.pm/materialize).
+  ```
+  # add JQuery
+  npm: {
+    enabled: true,
+    globals: {
+      $: 'jquery',
+      jQuery: 'jquery'
+    }
+  }
+  ```
 
+  Use **materialize-css** in you template project: [Documentations](https://hexdocs.pm/materialize/Materialize.html)

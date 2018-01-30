@@ -63,17 +63,19 @@ defmodule Materialize do
 
   After install you have next structure in the folder *assets*:
 
-    #{@assets_struct}
+  ```
+  #{@assets_struct}
+  ```
 
   Comment out or delete the contents of the file **assets/css/phoenix.css**
 
   If you are using a brunch, change the file assets/brunch-config.js:
 
-    #{@if_use_branch}
+  ```
+  #{@if_use_branch}
+  ```
 
-  Use **materialize-css** in you template project:
-
-  [Documentations](https://hexdocs.pm/materialize/Materialize.html)
+  Use **materialize-css** in you template project: [Documentations](https://hexdocs.pm/materialize/Materialize.html)
 
   Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
   and published on [HexDocs](https://hexdocs.pm). Once published, the docs can

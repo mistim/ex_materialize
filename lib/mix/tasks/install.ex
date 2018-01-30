@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Materialize.Install do
   If you are using a brunch, change the file **assets/brunch-config.js**:
 
 	```Elixir
-    #{Materialize.if_use_branch}
+  #{Materialize.if_use_branch}
 	```
 	"""
 
