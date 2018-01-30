@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Materialize.Install do
 
 	@doc "start task"
 	def run(_) do
-		IO.puts "Install materialize-css"
+		IO.puts "Install materialize-css v #{Materialize.Mixfile.get_version}"
 		do_run()
 	end
 

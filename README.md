@@ -9,7 +9,7 @@ This package install [materialize-css](http://materializecss.com/getting-started
 
   ```elixir
   def deps do
-    [{:materialize, "~> #{Materialize.Mixfile.get_version}"}]
+    [{:materialize, "~> 0.3.1"}]
   end
   ```
 
