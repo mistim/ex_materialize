@@ -1,17 +1,18 @@
 defmodule Materialize.Mixfile do
   use Mix.Project
 
-  @version "0.1.2-dev"
+  @version "0.3.0"
 
   def project do
     [app: :materialize,
      version: @version,
      elixir: "~> 1.4",
+     phoenix: "~> 1.3.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
      name: "Materialize",
-     docs: [extras: ["README.md"], main: "Materialize"],
+     # docs: [extras: ["README.md"], main: "Materialize"],
      description: description(),
      package: package()]
   end
@@ -35,8 +36,8 @@ defmodule Materialize.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev},
-      {:phoenix_html, "~> 2.9"}
+      {:ex_doc, "~> 0.14", only: :docs},
+      {:phoenix, "~> 1.3.0"}
     ]
   end
 
@@ -53,5 +54,9 @@ defmodule Materialize.Mixfile do
      maintainers: ["Mistim", "Mikhail Oslovskiy"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/mistim/ex_materialize"}]
+  end
+
+  def get_version do
+    @version
   end
 end

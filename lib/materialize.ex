@@ -1,4 +1,32 @@
 defmodule Materialize do
+  @assets_struct """
+    project_dir
+    ...
+    |--assets
+      |--static
+        |--fonts
+          |--***
+      |--vendor
+        |--materialize
+          |--css
+            |--materialize.css
+            |--materialize.min.css
+          |--js
+            |--materialize.js
+            |--materialize.min.js
+    ...
+  """
+  @if_use_branch """
+    # add JQuery
+    npm: {
+      enabled: true,
+      globals: {
+        $: 'jquery',
+        jQuery: 'jquery'
+      }
+    }
+"""
+
   @moduledoc """
   This package install [materialize-css](http://materializecss.com/getting-started.html) to you project.
 
@@ -9,7 +37,7 @@ defmodule Materialize do
 
   ```elixir
   def deps do
-    [{:materialize, "~> 0.1.1"}]
+    [{:materialize, "~> #{Materialize.Mixfile.get_version}"}]
   end
   ```
 
@@ -30,50 +58,32 @@ defmodule Materialize do
   Task **materialize.install** do next:
 
   * npm - run npm install materialize-css --save-dev
-  * dist - copy js, css files to *web/static/vendor/materialize*
-  * fonts  - copy dir fonts to *web/static/assets*
-  * brunch - append instructions to brunch-config.js
+  * dist - copy js, css files to *assets/vendor/materialize*
+  * fonts  - copy dir fonts to *assets/static*
 
-  After install you have next structure:
+  After install you have next structure in the folder *assets*:
 
-  		project_dir
-  		...
-  		|--priv
-  		    |--static
-  		        |--css
-  		            |--materialize.css
-  		            |--materialize.min.css
-  		        |--js
-  		            |--materialize.js
-  		            |--materialize.min.js
-  		...
-  		|--web
-  		    |--static
-  		        |--assets
-  		            |--fonts
-  		    |--vendor
-  		        |--materialize
-  		           |--css
-  		               |--materialize.css
-  		               |--materialize.min.css
-  		           |--js
-  		               |--materialize.js
-  		               |--materialize.min.js
-  		...
+    #{@assets_struct}
+
+  If you are using a brunch, change the file assets/brunch-config.js:
+
+    #{@if_use_branch}
 
   Use **materialize-css** in you template project:
 
-  ```Elixir
-  	# web/templates/layout/app.html.eex
-
-  	<link rel="stylesheet" href="<%= static_path(@conn, "/css/materialize.css") %>">
-
-  	<script src="<%= static_path(@conn, "/js/materialize.js") %>"></script>
-  ```
+  [Documentations](https://hexdocs.pm/materialize/Materialize.html)
 
   Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
   and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
   be found at [https://hexdocs.pm/materialize](https://hexdocs.pm/materialize).
 
   """
+
+  def assets_struct do
+    @assets_struct
+  end
+
+  def if_use_branch do
+    @if_use_branch
+  end
 end
