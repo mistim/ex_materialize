@@ -25,14 +25,37 @@ defmodule Mix.Tasks.Materialize.Install do
 
 	use Mix.Task
 
-  @access_phx_version "1.3.0"
+  @compile if Mix.env == :test, do: :export_all
+
+  @cmd_npm "npm install materialize-css --save-dev"
+  @assets_struct """
+  project_dir
+  ...
+  |--assets
+      |--static
+          |--fonts
+              |--***
+  ...
+  |--assets
+      |--vendor
+          |--materialize
+             |--css
+                 |--materialize.css
+                 |--materialize.min.css
+             |--js
+                 |--materialize.js
+                 |--materialize.min.js
+"""
 
 	@doc "start task"
 	def run(_) do
 		IO.puts "Install materialize-css"
-    check_version(:phoenix, @access_phx_version)
 		do_run()
 	end
+
+  def get_assets_struct do
+    @assets_struct
+  end
 
 	defp do_run do
 		npm_install() |> do_assets()
@@ -40,13 +63,13 @@ defmodule Mix.Tasks.Materialize.Install do
 	end
 
 	defp npm_install do
-		cmd("cd #{Path.absname("assets")} && npm install materialize-css --save-dev")
+		cmd("cd #{Path.absname("assets")} && #{@cmd_npm}")
 		cmd("cd ../")
 		Path.join(~w(assets node_modules materialize-css dist))
 	end
 
 	defp do_assets(npm_dist_path) do
-    chek_path(npm_dist_path, "\nTray run: npm install materialize-css --save-dev")
+    chek_path(npm_dist_path, "\nTray run: #{@cmd_npm}")
 
     web_vendor_path = Path.join(~w(assets vendor materialize))
     priv_static_path = Path.join(~w(assets static))
@@ -56,10 +79,25 @@ defmodule Mix.Tasks.Materialize.Install do
     copy_dir_r(npm_dist_path, web_vendor_path, "css")
     copy_dir_r(npm_dist_path, web_vendor_path, "js")
     copy_dir_r(npm_dist_path, priv_static_path, "fonts")
+
+    Mix.shell.info [:white, "* New files copied:"]
+    Mix.shell.info [:white, "#{@assets_struct}"]
 	end
 
   defp finish do
-    Mix.shell.info [:green, "* The materialize-css installed successful!"]
+    Mix.shell.info [:green, "* The materialize-css installed successful! \n"]
+    Mix.shell.info [:white, """
+* If you are using a brunch, change the file assets/brunch-config.js:
+
+  # add JQuery
+  npm: {
+    enabled: true,
+    globals: {
+      $: 'jquery',
+      jQuery: 'jquery'
+    }
+  }
+"""]
   end
 
   defp cmd(cmd) do
@@ -75,21 +113,6 @@ defmodule Mix.Tasks.Materialize.Install do
 		File.cp_r(Path.join([source_path, dir]), res_dist_path)
 		chek_path res_dist_path
 	end
-
-  defp check_version(module, version) do
-    dep_version = get_project_dep(module)
-
-    unless Version.match?(version, dep_version) do
-      Mix.raise """
-      Dependency "#{module}" must have version #{version} but its version #{dep_version}
-      """
-    end
-  end
-
-  defp get_project_dep(module) do
-    project_config = Mix.Project.config
-    project_config[:deps][module]
-  end
 
 	defp chek_path(path) do
 		unless File.exists? path do

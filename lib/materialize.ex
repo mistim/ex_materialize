@@ -35,23 +35,7 @@ defmodule Materialize do
 
   After install you have next structure:
 
-  		project_dir
-  		...
-  		|--assets
-  		    |--static
-  		        |--fonts
-  		            |--***
-  		...
-  		|--assets
-  		    |--vendor
-  		        |--materialize
-  		           |--css
-  		               |--materialize.css
-  		               |--materialize.min.css
-  		           |--js
-  		               |--materialize.js
-  		               |--materialize.min.js
-  		...
+  		#{Mix.Tasks.Materialize.Install.get_assets_struct}
 
   Use **materialize-css** in you template project:
 
