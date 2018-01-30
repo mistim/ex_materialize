@@ -54,18 +54,17 @@ After install you have next structure:
 		            |--materialize.js
 		            |--materialize.min.js
 		...
-		|--web
-		    |--static
-		        |--assets
-		            |--fonts
+		
+		|--assets
 		    |--vendor
-		        |--materialize
-		           |--css
-		               |--materialize.css
-		               |--materialize.min.css
-		           |--js
-		               |--materialize.js
-		               |--materialize.min.js
+			|--materialize
+			   |--css
+			       |--materialize.css
+			       |--materialize.min.css
+			   |--fonts
+			   |--js
+			       |--materialize.js
+			       |--materialize.min.js
 		...
 		
 Use **materialize-css** in you template project:
@@ -75,6 +74,7 @@ Use **materialize-css** in you template project:
 	
 	<link rel="stylesheet" href="<%= static_path(@conn, "/css/materialize.css") %>">
 	
+	# Add it below the script tag for app.js
 	<script src="<%= static_path(@conn, "/js/materialize.js") %>"></script>
 ```
 
