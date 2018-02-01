@@ -4,7 +4,7 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
   @moduledoc """
   Generates controller, views, and context for an HTML resource.
 
-      mix phx.gen.html Accounts User users name:string age:integer
+      mix materialize.gen.html Accounts User users name:string age:integer
 
   The first argument is the context module followed by the schema module
   and its plural name (used as the schema table name).
@@ -43,7 +43,7 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
 
   Alternatively, the `--context-app` option may be supplied to the generator:
 
-      mix phx.gen.html Sales User users --context-app warehouse
+      mix materialize.gen.html Sales User users --context-app warehouse
 
   ## Web namespace
 
@@ -51,7 +51,7 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
   You can customize the web module namespace by passing the `--web` flag with a
   module name, for example:
 
-      mix phx.gen.html Sales User users --web Sales
+      mix materialize.gen.html Sales User users --web Sales
 
   Which would geneate a `lib/app_web/controllers/sales/user_controller.ex` and
   `lib/app_web/views/sales/user_view.ex`.
@@ -69,7 +69,7 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
   the plural name provided for the resource. To customize this value,
   a `--table` option may be provided. For example:
 
-      mix phx.gen.html Accounts User users --table cms_users
+      mix materialize.gen.html Accounts User users --table cms_users
 
   ## binary_id
 
@@ -101,11 +101,11 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
   @doc false
   def run(args) do
     if Mix.Project.umbrella? do
-      Mix.raise "mix phx.gen.html can only be run inside an application directory"
+      Mix.raise "materialize phx.gen.html can only be run inside an application directory"
     end
     {context, schema} = Gen.Context.build(args)
     binding = [context: context, schema: schema, inputs: inputs(schema)]
-    paths = Mix.Phoenix.generator_paths()
+    paths = Materialize.generator_paths()
 
     prompt_for_conflicts(context)
 
@@ -120,9 +120,11 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
     |> Kernel.++(context_files(context))
     |> Mix.Phoenix.prompt_for_conflicts()
   end
+
   defp context_files(%Context{generate?: true} = context) do
     Gen.Context.files_to_be_generated(context)
   end
+
   defp context_files(%Context{generate?: false}) do
     []
   end
@@ -149,7 +151,9 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
   def copy_new_files(%Context{} = context, paths, binding) do
     files = files_to_be_generated(context)
     Mix.Phoenix.copy_from(paths, "priv/templates/materialize.gen.html", binding, files)
-    if context.generate?, do: Gen.Context.copy_new_files(context, paths, binding)
+    if context.generate? do 
+      Gen.Context.copy_new_files(context, Mix.Phoenix.generator_paths(), binding)
+    end
     context
   end
 
@@ -180,37 +184,29 @@ defmodule Mix.Tasks.Materialize.Gen.Html do
   defp inputs(%Schema{} = schema) do
     Enum.map(schema.attrs, fn
       {_, {:array, _}} ->
-        {nil, nil, nil}
+        nil
       {_, {:references, _}} ->
-        {nil, nil, nil}
+        nil
       {key, :integer} ->
-        {label(key), ~s(<%= number_input f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :number_input %>)
       {key, :float} ->
-        {label(key), ~s(<%= number_input f, #{inspect(key)}, step: "any", class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :number_input %>)
       {key, :decimal} ->
-        {label(key), ~s(<%= number_input f, #{inspect(key)}, step: "any", class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :number_input %>)
       {key, :boolean} ->
-        {label(key), ~s(<%= checkbox f, #{inspect(key)}, class: "checkbox" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :checkbox %>)
       {key, :text} ->
-        {label(key), ~s(<%= textarea f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :textarea %>)
       {key, :date} ->
-        {label(key), ~s(<%= date_select f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :date_select %>)
       {key, :time} ->
-        {label(key), ~s(<%= time_select f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :time_select %>)
       {key, :utc_datetime} ->
-        {label(key), ~s(<%= datetime_select f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :datetime_select %>)
       {key, :naive_datetime} ->
-        {label(key), ~s(<%= datetime_select f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :datetime_select %>)
       {key, _}  ->
-        {label(key), ~s(<%= text_input f, #{inspect(key)}, class: "form-control" %>), error(key)}
+        ~s(<%= input f, #{inspect(key)}, using: :text_input %>)
     end)
-  end
-
-  defp label(key) do
-    ~s(<%= label f, #{inspect(key)}, class: "control-label" %>)
-  end
-
-  defp error(field) do
-    ~s(<%= error_tag f, #{inspect(field)} %>)
   end
 end

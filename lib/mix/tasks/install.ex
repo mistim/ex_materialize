@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Materialize.Install do
   If you are using a brunch, change the file **assets/brunch-config.js**:
 
 	```Elixir
-  #{Materialize.if_use_branch}
+  #{Materialize.brach_conf}
 	```
 	"""
 
@@ -59,7 +59,7 @@ defmodule Mix.Tasks.Materialize.Install do
   defp finish do
     Mix.shell.info [:green, "* The materialize-css installed successful!"]
     Mix.shell.info [:white, "\n* If you are using a brunch, change the file assets/brunch-config.js:"]
-    Mix.shell.info [:white, "\n#{Materialize.if_use_branch}"]
+    Mix.shell.info [:white, "\n#{Materialize.brach_conf}"]
   end
 
   defp cmd(cmd) do

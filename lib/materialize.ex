@@ -16,7 +16,7 @@ defmodule Materialize do
             |--materialize.min.js
     ...
   """
-  @if_use_branch """
+  @brach_conf """
     # add JQuery
     npm: {
       enabled: true,
@@ -72,7 +72,7 @@ defmodule Materialize do
   If you are using a brunch, change the file assets/brunch-config.js:
 
   ```
-  #{@if_use_branch}
+  #{@brach_conf}
   ```
 
   Use **materialize-css** in you template project: [Documentations](https://hexdocs.pm/materialize/Materialize.html)
@@ -87,7 +87,17 @@ defmodule Materialize do
     @assets_struct
   end
 
-  def if_use_branch do
-    @if_use_branch
+  def brach_conf do
+    @brach_conf
+  end
+
+  @doc """
+  The paths to look for template files for generators.
+
+  Defaults to checking the current app's priv directory,
+  and falls back to phoenix's priv directory.
+  """
+  def generator_paths do
+    [".", :materialize]
   end
 end

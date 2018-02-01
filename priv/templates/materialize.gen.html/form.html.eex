@@ -1,11 +1,5 @@
 <%%= form_for @changeset, @action, [class: 'mb20'], fn f -> %>
-<%= for {label, input, error} <- inputs, input do %>
-  <div class="form-group">
-    <%= label %>
-    <%= input %>
-    <%= error %>
-  </div>
-<% end %>
-  <%= submit "Submit", class: "btn green lighten-2" %>
-  <%= link "Back", to: user_path(@conn, :index), class: "btn blue-grey lighten-2" %>
+	<%= for input <- inputs, input, do: input <> "\n\t" %>
+	<%%= submit "Submit", class: "btn green lighten-2" %>
+	<%%= link "Back", to: user_path(@conn, :index), class: "btn blue-grey lighten-2" %>
 <%% end %>
